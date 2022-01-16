@@ -1,0 +1,13 @@
+.wrapper-div{
+    width: 500px; 
+    margin: 0 auto;
+    font-size: 32px;
+}
+
+.the-table{
+    margin: 0 auto;
+    font-size: 32px;
+    border: 1px solid black;
+    width: 100%;
+    text-align: center;
+}

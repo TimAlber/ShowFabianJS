@@ -1,0 +1,105 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="all.css" />
+</head>
+
+<body>
+  <div class="wrapper-div">
+    <input type="text" name="firstname" value="" id="val1" />
+    <button type="button" onclick="writedata()">Add to Shopping List</button>
+  </div>
+
+  <table id="myTable" class="the-table">
+    <tr>
+      <th>Item</th>
+      <th>Change</th>
+      <th>Delete</th>
+    </tr>
+  </table>
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyDNUxMb8S9BPVJ041SF1xNTuzROqI1hu0w",
+      authDomain: "learn-firebase-afc52.firebaseapp.com",
+      databaseURL: "https://learn-firebase-afc52.firebaseio.com",
+      projectId: "learn-firebase-afc52",
+      storageBucket: "learn-firebase-afc52.appspot.com",
+      messagingSenderId: "788797223577",
+      appId: "1:788797223577:web:066d79b57b149531"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const dbRefObj = firebase
+      .database()
+      .ref()
+      .child("items");
+    const dbRefList = dbRefObj.child("itemlist");
+
+    dbRefList.on("child_added", snap => {
+      var valuee = snap.val().item;
+      if (valuee) {
+        var table = document.getElementById("myTable");
+        var row = table.insertRow();
+        var valcell = row.insertCell(0);
+        var chncell = row.insertCell(1);
+        var delcell = row.insertCell(2);
+        row.id = snap.key;
+
+        valcell.innerHTML = valuee;
+        delcell.innerHTML =
+          '<input type="button" value="Delete" onclick="deleteRow(this)">';
+        chncell.innerHTML =
+          '<input type="button" value="Change" onclick="changeVal(this)">';
+      } else {
+        alert("Type something");
+      }
+    });
+
+    dbRefList.on("child_changed", snap => {
+      document.getElementById(snap.key).cells[0].innerHTML = snap.val().item;
+    });
+
+    dbRefList.on("child_removed", snap => {
+      let x = document.getElementById(snap.key).rowIndex;
+      document.getElementById("myTable").deleteRow(x);
+    });
+
+    function writedata() {
+      var valuee = document.getElementById("val1").value;
+      firebase
+        .database()
+        .ref("items/itemlist/")
+        .push({
+          item: valuee
+        });
+    }
+
+    function deleteRow(r) {
+      let x = r.parentNode.parentNode.id;
+      firebase
+        .database()
+        .ref("items/itemlist/" + x)
+        .remove();
+    }
+
+    function changeVal(r) {
+      let x = r.parentNode.parentNode.id;
+      var changeval = prompt(
+        "Please enter your new Item Name",
+        "Enter new Item Name Here"
+      );
+      if (changeval) {
+        firebase
+          .database()
+          .ref("items/itemlist/" + x)
+          .set({
+            item: changeval
+          });
+      } else {
+        alert("Type something");
+      }
+    }
+  </script>
+</body>

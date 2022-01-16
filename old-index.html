@@ -1,0 +1,30 @@
+<select id="mySelect">
+    <option value="Markus">Markus</option>
+    <option value="Tim">Tim</option>
+    <option value="Jörn">Jörn</option>
+    <option value="Mat">Mat</option>
+ </select>
+ <input type="text" name="firstname" value="Wert" id="val1">
+ <button type="button" onclick="setta()">Add to Shopping List</button>
+ <ul id="list" style="font-size: 36px; font-style: italic">
+ </ul>
+ <script>
+    function setta(){
+        var valuee =  document.getElementById("val1").value;
+        var user = document.getElementById("mySelect").value
+        if(valuee){
+            var ul = document.getElementById("list");
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(user+" says "+valuee));
+            var btn = document.createElement("BUTTON");
+            btn.innerHTML = "Delete";
+            btn.onclick = function(){
+                this.parentNode.parentNode.removeChild(this.parentNode);
+            };
+            li.appendChild(btn);
+            ul.appendChild(li);
+        }else{
+            alert('Type Something');
+        }
+    }
+ </script>

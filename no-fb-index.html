@@ -1,0 +1,64 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="all.css">
+</head>
+ 
+ <div class="wrapper-div">
+    <select id="mySelect">
+        <option value="Markus">Markus</option>
+        <option value="Tim">Tim</option>
+        <option value="Jörn">Jörn</option>
+        <option value="Mat">Mat</option>
+    </select>
+
+    <input type="text" name="firstname" value="" id="val1">
+    <button type="button" onclick="setta()">Add to Shopping List</button>
+</div>
+
+<table id="myTable" class="the-table">
+    <tr>
+        <th>Who</th>
+        <th>Item</th>
+        <th>Delete</th>
+        <th>Change</th>
+    </tr>
+</table>
+
+
+<script>
+    function setta(){
+        var valuee =  document.getElementById("val1").value;
+        var user = document.getElementById("mySelect").value
+        if(valuee){
+            var table = document.getElementById("myTable");
+            var row = table.insertRow();
+            var whocell = row.insertCell(0);
+            var valcell = row.insertCell(1);
+            var delcell = row.insertCell(2);
+            var chncell = row.insertCell(3);
+
+            whocell.innerHTML = user;
+            valcell.innerHTML = valuee;
+            delcell.innerHTML = '<input type="button" value="Delete" onclick="deleteRow(this)">';
+            chncell.innerHTML = '<input type="button" value="Change" onclick="changeVal(this)">';
+
+        }else{
+            alert('Type something');
+        }
+    }
+    function deleteRow(r){
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("myTable").deleteRow(i);
+    }
+
+    function changeVal(r){
+        var i = r.parentNode.parentNode.rowIndex;
+        var oldvalue = document.getElementById("myTable").rows[i].cells[1].innerHTML
+        var changeval = prompt("Please enter your new Item Name", oldvalue);
+        if(changeval){
+            document.getElementById("myTable").rows[i].cells[1].innerHTML = changeval;
+        }
+        else{
+            alert('Type something');
+        }
+    }
+</script>
